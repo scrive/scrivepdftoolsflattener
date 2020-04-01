@@ -1,14 +1,16 @@
 package com.scrive.pdftools.tools;
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.exceptions.BadPasswordException;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.forms.PdfAcroForm;
+import com.itextpdf.kernel.crypto.BadPasswordException;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Flattener {
+
     public static void main(String[] args) {
         if (args.length != 2) {
             System.err.println("Usage:");
@@ -16,21 +18,19 @@ public class Flattener {
             System.exit(-1);
         }
         try {
-            PdfStamper stamper;
-            PdfReader reader = new PdfReader(args[0]);
+            PdfReader reader;
             FileOutputStream os = new FileOutputStream(args[1]);
             try {
-                stamper = new PdfStamper(reader, os);
+                reader = new PdfReader(args[0]);
             } catch (BadPasswordException e) {
-                PdfReader.unethicalreading = true;
-                stamper = new PdfStamper(reader, os);
+               reader = new PdfReader(args[0]).setUnethicalReading(true);
             }
-            stamper.setFormFlattening(true);
-            stamper.close();
+
+            PdfDocument pdfDoc = new PdfDocument(reader, new PdfWriter(os));
+            PdfAcroForm form = PdfAcroForm.getAcroForm(pdfDoc, true);
+            form.flattenFields();
+            pdfDoc.close();
             return;
-        } catch (DocumentException e) {
-            e.printStackTrace();
-            System.exit(-1);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
