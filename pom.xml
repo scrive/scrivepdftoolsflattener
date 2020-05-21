@@ -52,7 +52,20 @@
         </plugins>
         <finalName>scrivepdftoolsflattener</finalName>
     </build>
+    <repositories>
+        <repository>
+            <id>itextrepo</id>
+            <name>iText Releases Repository</name>
+            <url>https://repo.itextsupport.com/releases/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
     <dependencies>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-licensekey</artifactId>
+            <version>3.0.6</version>
+        </dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>kernel</artifactId>
@@ -77,6 +90,6 @@
             <groupId>com.itextpdf</groupId>
             <artifactId>pdftest</artifactId>
             <version>7.1.7</version>
-      </dependency>
+        </dependency>
     </dependencies>
 </project>
