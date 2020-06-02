@@ -21,9 +21,12 @@ public class Flattener {
                 LicenseKey.loadLicenseFile( "scrivepdftools/itextkey.xml" );
             } catch (Exception e) {}
             PdfDocument pdfDoc = new PdfDocument(new PdfReader(args[0]), new PdfWriter(args[1]));
-            PdfAcroForm fields = PdfAcroForm.getAcroForm(pdfDoc, true);
 
-            fields.flattenFields();
+            try {
+              PdfAcroForm fields = PdfAcroForm.getAcroForm(pdfDoc, true);
+              fields.flattenFields();
+            } catch (Exception e) {}
+
             pdfDoc.close();
             return;
 
