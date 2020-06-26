@@ -1,9 +1,7 @@
 package com.scrive.pdftools.tools;
 
 import com.itextpdf.forms.PdfAcroForm;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.licensekey.LicenseKey;
 
 import java.io.IOException;
@@ -25,7 +23,12 @@ public class Flattener {
             try {
               PdfAcroForm fields = PdfAcroForm.getAcroForm(pdfDoc, true);
               fields.flattenFields();
-            } catch (Exception e) {}
+            } catch (NullPointerException e) {
+                PdfDictionary acroFormDictionary = pdfDoc.getCatalog().getPdfObject().getAsDictionary(PdfName.AcroForm);
+                acroFormDictionary.clear();
+                PdfAcroForm fields = PdfAcroForm.getAcroForm(pdfDoc, true);
+                fields.flattenFields();
+            }
 
             pdfDoc.close();
             return;
