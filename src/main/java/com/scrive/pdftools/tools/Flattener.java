@@ -26,6 +26,7 @@ public class Flattener {
                 stamper = new PdfStamper(reader, os);
             }
             stamper.setFormFlattening(true);
+            stamper.setAnnotationFlattening(true);
             stamper.close();
             return;
         } catch (DocumentException e) {
