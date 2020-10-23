@@ -1,32 +1,12 @@
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.*;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class TestUtils {
-
-    public static String inputFile(String fileName) {
-        return System.getProperty("user.dir") + "/src/test/resources/" + fileName;
-    }
-
-    public static String outputFile(String fileName) {
-        return System.getProperty("user.dir") + "/src/test/resources/" + fileName;
-    }
-
-    public static String fromStream(InputStream inputStream) throws IOException {
-        final int bufferSize = 1024;
-        final char[] buffer = new char[bufferSize];
-        final StringBuilder out = new StringBuilder();
-        Reader in = new InputStreamReader(inputStream, "UTF-8");
-        for (; ; ) {
-            int rsz = in.read(buffer, 0, buffer.length);
-            if (rsz < 0)
-                break;
-            out.append(buffer, 0, rsz);
-        }
-        return out.toString();
-    }
 
     public static boolean checkDocumentIsFlat(InputStream fileFlattened) {
         boolean isflat;

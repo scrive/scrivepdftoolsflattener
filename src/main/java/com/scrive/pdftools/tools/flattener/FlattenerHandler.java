@@ -8,7 +8,7 @@ public class FlattenerHandler {
 
     public static ByteArrayOutputStream execute(JSONObject flatSpecJSON) throws Exception {
         FlattenerSpec flatSpec = FlattenerSpec.fromJson(flatSpecJSON);
-        if(flatSpec == null) {
+        if (flatSpec == null) {
             throw new Exception("Failed to parse spec from json");
         }
         ByteArrayOutputStream res = LambdaFlattener.execute(flatSpec);

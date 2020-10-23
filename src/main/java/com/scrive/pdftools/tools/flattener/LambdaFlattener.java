@@ -7,16 +7,13 @@ import com.itextpdf.text.pdf.PdfStamper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class LambdaFlattener {
 
-    public static ByteArrayOutputStream execute(FlattenerSpec flatSpec) throws IOException {
-
-        final ByteArrayInputStream file = new ByteArrayInputStream(flatSpec.mainFileInput.getContent());
+    public static ByteArrayOutputStream execute(FlattenerSpec flatSpec) throws IOException, DocumentException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try {
+        try (ByteArrayInputStream file = new ByteArrayInputStream(flatSpec.mainFileInput.getContent())) {
             PdfStamper stamper;
             PdfReader reader = new PdfReader(file);
             try {
@@ -28,12 +25,6 @@ public class LambdaFlattener {
             stamper.setFormFlattening(true);
             stamper.setAnnotationFlattening(true);
             stamper.close();
-        } catch (DocumentException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
         }
         return bos;
     }
