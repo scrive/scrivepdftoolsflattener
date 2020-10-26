@@ -8,24 +8,34 @@ import com.itextpdf.text.pdf.PdfStamper;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class LambdaFlattener {
 
     public static ByteArrayOutputStream execute(FlattenerSpec flatSpec) throws IOException, DocumentException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try (ByteArrayInputStream file = new ByteArrayInputStream(flatSpec.mainFileInput.getContent())) {
-            PdfStamper stamper;
+        try (ByteArrayInputStream file = new ByteArrayInputStream(flatSpec.getFileContent())) {
             PdfReader reader = new PdfReader(file);
-            try {
-                stamper = new PdfStamper(reader, bos);
+            try(PdfStamperAutoclosable stamper = new PdfStamperAutoclosable(reader, bos)) {
+                stamper.setFormFlattening(true);
+                stamper.setAnnotationFlattening(true);
             } catch (BadPasswordException e) {
                 PdfReader.unethicalreading = true;
-                stamper = new PdfStamper(reader, bos);
+                try(PdfStamperAutoclosable stamper = new PdfStamperAutoclosable(reader, bos)) {
+                    stamper.setFormFlattening(true);
+                    stamper.setAnnotationFlattening(true);
+                }
             }
-            stamper.setFormFlattening(true);
-            stamper.setAnnotationFlattening(true);
-            stamper.close();
         }
         return bos;
     }
+
+    private static class PdfStamperAutoclosable extends PdfStamper implements AutoCloseable {
+        public PdfStamperAutoclosable(PdfReader reader, OutputStream os) throws IOException, DocumentException {
+            super(reader, os);
+        }
+    }
+
 }
+
+

@@ -7,14 +7,16 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.*;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class FlattenerTest {
+
+
     @Test
     public void shouldFlattenFields() throws IOException, DocumentException {
-        final JSONObject specToFlatten = new JSONObject(IOUtils.resourceToString("/flat_test_filled.json", Charset.defaultCharset()));
+        final JSONObject specToFlatten = new JSONObject(IOUtils.resourceToString("/flat_test_filled.json", StandardCharsets.UTF_8));
         final FlattenerSpec fileToFlattenSpec = FlattenerSpec.fromJson(specToFlatten);
-        final ByteArrayInputStream fileToCheck = new ByteArrayInputStream(fileToFlattenSpec.getMainFileInput().getContent());
+        final ByteArrayInputStream fileToCheck = new ByteArrayInputStream(fileToFlattenSpec.getFileContent());
         //Check that the PdfFormField "name" is present in the document.
         Assert.assertTrue(TestUtils.checkDocumentIsFlat(fileToCheck));
 

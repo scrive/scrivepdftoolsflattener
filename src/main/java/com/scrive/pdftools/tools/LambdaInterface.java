@@ -3,11 +3,13 @@ package com.scrive.pdftools.tools;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.scrive.pdftools.tools.flattener.FlattenerHandler;
 import com.scrive.pdftools.tools.utils.S3ForLambda;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public class LambdaInterface {
@@ -60,7 +62,7 @@ public class LambdaInterface {
 
         JSONObject callJSON;
         try {
-            String fs = S3ForLambda.fromStreamToString(inputStream);
+            String fs = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             JSONObject inputJSON = new JSONObject(fs);
             boolean hasRequestBodyHiddenInJSON = inputJSON.has(RQ_PARAM_ACTION_BODY);
             if (hasRequestBodyHiddenInJSON) {

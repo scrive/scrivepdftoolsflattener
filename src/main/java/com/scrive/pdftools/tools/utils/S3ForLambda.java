@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public class S3ForLambda {
@@ -22,10 +23,6 @@ public class S3ForLambda {
     private static final String ENV_PARAM_FAKES3_PORT = "fakes3_port";
     private static final Regions S3_REGION = Regions.EU_WEST_1;
 
-
-    public static String fromStreamToString(InputStream inputStream) throws IOException {
-        return IOUtils.toString(inputStream, Charset.defaultCharset());
-    }
 
     private static AmazonS3 getS3Client(){
         final AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard();
@@ -45,7 +42,7 @@ public class S3ForLambda {
         S3Object object = S3ForLambda.getS3Client().getObject(
                 new GetObjectRequest(System.getenv(ENV_PARAM_BUCKET), name));
         try (InputStream objectData = object.getObjectContent()) {
-            return IOUtils.toString(objectData, Charset.defaultCharset());
+            return IOUtils.toString(objectData, StandardCharsets.UTF_8);
         }
     }
 
