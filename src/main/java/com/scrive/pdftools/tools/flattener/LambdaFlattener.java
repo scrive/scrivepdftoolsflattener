@@ -16,18 +16,21 @@ public class LambdaFlattener {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try (ByteArrayInputStream file = new ByteArrayInputStream(flatSpec.getFileContent())) {
             PdfReader reader = new PdfReader(file);
-            try(PdfStamperAutoclosable stamper = new PdfStamperAutoclosable(reader, bos)) {
-                stamper.setFormFlattening(true);
-                stamper.setAnnotationFlattening(true);
+            try {
+                flatten(reader, bos);
             } catch (BadPasswordException e) {
                 PdfReader.unethicalreading = true;
-                try(PdfStamperAutoclosable stamper = new PdfStamperAutoclosable(reader, bos)) {
-                    stamper.setFormFlattening(true);
-                    stamper.setAnnotationFlattening(true);
-                }
+                flatten(reader, bos);
             }
         }
         return bos;
+    }
+
+    private static void flatten(PdfReader reader, ByteArrayOutputStream bos) throws IOException, DocumentException {
+        try (PdfStamperAutoclosable stamper = new PdfStamperAutoclosable(reader, bos)) {
+            stamper.setFormFlattening(true);
+            stamper.setAnnotationFlattening(true);
+        }
     }
 
     private static class PdfStamperAutoclosable extends PdfStamper implements AutoCloseable {

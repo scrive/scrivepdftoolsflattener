@@ -36,7 +36,7 @@ public class LambdaInterface {
                     jsonObject = new JSONObject(fileContent);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    LambdaInterface.respondWithError(outputStream, "Can't parse spec as JSON");
+                    respondWithError(outputStream, "Can't parse spec as JSON");
                     return;
                 }
 
@@ -72,19 +72,19 @@ public class LambdaInterface {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LambdaInterface.respondWithError(outputStream, "Invalid input - call spec has to be a json");
+            respondWithError(outputStream, "Invalid input - call spec has to be a json");
             return;
         }
 
         if (!callJSON.has(RQ_PARAM_ACTION)) {
-            LambdaInterface.respondWithError(outputStream, "Invalid action. Action has to be set");
+            respondWithError(outputStream, "Invalid action. Action has to be set");
             return;
         }
 
         switch (callJSON.getString(RQ_PARAM_ACTION)) {
             case RQ_PARAM_ACTION_FLATTEN:
                 System.out.println("DEBUG: Processing flatten action");
-                LambdaInterface.handleFlattenAction(callJSON, outputStream);
+                handleFlattenAction(callJSON, outputStream);
                 return;
             default:
                 System.out.println(String.format("ERROR: Action %s isn't permitted", callJSON.getString(RQ_PARAM_ACTION)));
@@ -120,7 +120,7 @@ public class LambdaInterface {
             return Optional.of(callJSON.getString(RQ_PARAM_S3_FILENAME));
         } catch (Exception e) {
             e.printStackTrace();
-            LambdaInterface.respondWithError(outputStream, "Invalid input - can't fetch s3FileName");
+            respondWithError(outputStream, "Invalid input - can't fetch s3FileName");
             return Optional.empty();
         }
     }
@@ -130,7 +130,7 @@ public class LambdaInterface {
             return Optional.of(S3ForLambda.getStringFromAmazonFile(s3FileName));
         } catch (Exception e) {
             e.printStackTrace();
-            LambdaInterface.respondWithError(outputStream, "Failed to fetch spec file from S3");
+            respondWithError(outputStream, "Failed to fetch spec file from S3");
             return Optional.empty();
         }
     }

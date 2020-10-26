@@ -24,7 +24,7 @@ public class S3ForLambda {
     private static final Regions S3_REGION = Regions.EU_WEST_1;
 
 
-    private static AmazonS3 getS3Client(){
+    private static AmazonS3 getS3Client() {
         final AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard();
         getEnv(ENV_PARAM_ACCESS_KEY).ifPresent(accessKey ->
                 getEnv(ENV_PARAM_SECRET_KEY).ifPresent(secretKey ->
@@ -47,12 +47,13 @@ public class S3ForLambda {
     }
 
     public static void putStringToAmazonFile(String name, byte[] content) throws IOException {
-        ByteArrayInputStream contentStream  = new ByteArrayInputStream(content);
+        ByteArrayInputStream contentStream = new ByteArrayInputStream(content);
         ObjectMetadata meta = new ObjectMetadata();
         meta.setContentLength(content.length);
         PutObjectResult object = S3ForLambda.getS3Client().putObject(
                 new PutObjectRequest(System.getenv(ENV_PARAM_BUCKET), name, contentStream, meta));
     }
+
     private static Optional<String> getEnv(String name) {
         return Optional.ofNullable(System.getenv(name));
     }

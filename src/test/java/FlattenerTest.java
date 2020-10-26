@@ -16,12 +16,12 @@ public class FlattenerTest {
     public void shouldFlattenFields() throws IOException, DocumentException {
         final JSONObject specToFlatten = new JSONObject(IOUtils.resourceToString("/flat_test_filled.json", StandardCharsets.UTF_8));
         final FlattenerSpec fileToFlattenSpec = FlattenerSpec.fromJson(specToFlatten);
-        final ByteArrayInputStream fileToCheck = new ByteArrayInputStream(fileToFlattenSpec.getFileContent());
+        final byte[] fileToCheck = fileToFlattenSpec.getFileContent();
         //Check that the PdfFormField "name" is present in the document.
         Assert.assertTrue(TestUtils.checkDocumentIsFlat(fileToCheck));
 
         final ByteArrayOutputStream fileAfterFlattened = LambdaFlattener.execute(fileToFlattenSpec);
-        final InputStream fileFlattened = new ByteArrayInputStream(fileAfterFlattened.toByteArray());
+        final byte[] fileFlattened = fileAfterFlattened.toByteArray();
         //Check that the PdfFormField "name" is not present anymore.
         Assert.assertFalse(TestUtils.checkDocumentIsFlat(fileFlattened));
     }
