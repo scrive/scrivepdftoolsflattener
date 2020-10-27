@@ -12,7 +12,8 @@ import java.io.IOException;
 public class LambdaFlattener {
 
     public static byte[] execute(FlattenerSpec flatSpec) throws IOException, DocumentException {
-        try (ByteArrayInputStream file = new ByteArrayInputStream(flatSpec.getFileContent()); ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+        try (ByteArrayInputStream file = new ByteArrayInputStream(flatSpec.getFileContent());
+             ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             PdfReader reader = new PdfReader(file);
             try {
                 flatten(reader, bos);
