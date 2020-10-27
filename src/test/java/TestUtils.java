@@ -1,5 +1,7 @@
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.*;
+import com.scrive.pdftools.tools.utils.PdfReaderAutoclosable;
+import com.scrive.pdftools.tools.utils.PdfStamperAutoclosable;
 
 import java.io.*;
 
@@ -13,17 +15,5 @@ public class TestUtils {
             isflat = fields.setField("name", "ChangedName");
         }
         return isflat;
-    }
-
-    private static class PdfReaderAutoclosable extends PdfReader implements AutoCloseable {
-        public PdfReaderAutoclosable(byte[] pdfIn) throws IOException {
-            super(pdfIn);
-        }
-    }
-
-    private static class PdfStamperAutoclosable extends PdfStamper implements AutoCloseable {
-        public PdfStamperAutoclosable(PdfReader reader, OutputStream os) throws IOException, DocumentException {
-            super(reader, os);
-        }
     }
 }

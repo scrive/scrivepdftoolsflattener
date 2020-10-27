@@ -3,18 +3,16 @@ package com.scrive.pdftools.tools.flattener;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.exceptions.BadPasswordException;
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
+import com.scrive.pdftools.tools.utils.PdfStamperAutoclosable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 public class LambdaFlattener {
 
-    public static ByteArrayOutputStream execute(FlattenerSpec flatSpec) throws IOException, DocumentException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try (ByteArrayInputStream file = new ByteArrayInputStream(flatSpec.getFileContent())) {
+    public static byte[] execute(FlattenerSpec flatSpec) throws IOException, DocumentException {
+        try (ByteArrayInputStream file = new ByteArrayInputStream(flatSpec.getFileContent()); ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             PdfReader reader = new PdfReader(file);
             try {
                 flatten(reader, bos);
@@ -22,8 +20,8 @@ public class LambdaFlattener {
                 PdfReader.unethicalreading = true;
                 flatten(reader, bos);
             }
+            return bos.toByteArray();
         }
-        return bos;
     }
 
     private static void flatten(PdfReader reader, ByteArrayOutputStream bos) throws IOException, DocumentException {
@@ -32,13 +30,6 @@ public class LambdaFlattener {
             stamper.setAnnotationFlattening(true);
         }
     }
-
-    private static class PdfStamperAutoclosable extends PdfStamper implements AutoCloseable {
-        public PdfStamperAutoclosable(PdfReader reader, OutputStream os) throws IOException, DocumentException {
-            super(reader, os);
-        }
-    }
-
 }
 
 

@@ -20,8 +20,8 @@ public class FlattenerTest {
         //Check that the PdfFormField "name" is present in the document.
         Assert.assertTrue(TestUtils.checkDocumentIsFlat(fileToCheck));
 
-        final ByteArrayOutputStream fileAfterFlattened = LambdaFlattener.execute(fileToFlattenSpec);
-        final byte[] fileFlattened = fileAfterFlattened.toByteArray();
+        final byte[] fileAfterFlattened = LambdaFlattener.execute(fileToFlattenSpec);
+        final byte[] fileFlattened = fileAfterFlattened;
         //Check that the PdfFormField "name" is not present anymore.
         Assert.assertFalse(TestUtils.checkDocumentIsFlat(fileFlattened));
     }

@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-
 public class FileInput {
 
     static public byte[] getFileContent(JSONObject obj) throws IOException {

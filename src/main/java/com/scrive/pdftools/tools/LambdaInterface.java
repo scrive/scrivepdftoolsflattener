@@ -42,9 +42,9 @@ public class LambdaInterface {
 
                 try {
                     System.out.println("DEBUG: Started flattening action on document");
-                    ByteArrayOutputStream out1 = FlattenerHandler.execute(jsonObject);
+                    byte[] out1 = FlattenerHandler.execute(jsonObject);
                     String resultFileName = RESP_FILE_NAME_PREFIX + s3fileName;
-                    S3ForLambda.putStringToAmazonFile(resultFileName, out1.toByteArray());
+                    S3ForLambda.putStringToAmazonFile(resultFileName, out1);
                     JSONObject response = new JSONObject();
                     response.put(RESP_RESULT_S3_FILE_NAME, resultFileName);
                     response.put(RESP_SUCCESS, true);

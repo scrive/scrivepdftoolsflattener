@@ -6,20 +6,19 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class FlattenerSpec {
-    final private byte[] fileContent;
-    final private String documentNumberText;
+    private final byte[] fileContent;
+    private final String documentNumberText;
 
     public FlattenerSpec(byte[] fileContent, String documentNumberText) {
         this.fileContent = fileContent;
         this.documentNumberText = documentNumberText;
     }
 
-    static public FlattenerSpec fromJson(final JSONObject obj) throws IOException {
-        final JSONObject mainFileInputObject = obj.getJSONObject("mainFileInput");
+    static public FlattenerSpec fromJson(JSONObject obj) throws IOException {
+        JSONObject mainFileInputObject = obj.getJSONObject("mainFileInput");
         byte[] mainFileInput = FileInput.getFileContent(mainFileInputObject);
         String documentNumberText = obj.optString("documentNumberText");
-        final FlattenerSpec spec = new FlattenerSpec(mainFileInput, documentNumberText);
-        return spec;
+        return new FlattenerSpec(mainFileInput, documentNumberText);
     }
 
     public byte[] getFileContent() {
