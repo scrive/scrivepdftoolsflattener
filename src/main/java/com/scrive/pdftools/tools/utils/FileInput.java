@@ -1,7 +1,7 @@
 package com.scrive.pdftools.tools.utils;
 
 import com.itextpdf.text.pdf.codec.Base64;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
