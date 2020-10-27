@@ -6,7 +6,6 @@ import com.scrive.pdftools.tools.utils.S3ForLambda;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -85,9 +84,10 @@ public class LambdaInterface {
             case RQ_PARAM_ACTION_FLATTEN:
                 System.out.println("DEBUG: Processing flatten action");
                 handleFlattenAction(callJSON, outputStream);
-                return;
+                break;
             default:
                 System.out.println(String.format("ERROR: Action %s isn't permitted", callJSON.getString(RQ_PARAM_ACTION)));
+                break;
         }
     }
 
