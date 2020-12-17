@@ -57,6 +57,7 @@ public class Flattener {
                 pdfDoc.close();
                 byte[] pdfOut = bos.toByteArray();
                 writer.write(pdfOut);
+                writer.close();
 
             }
 
